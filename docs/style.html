@@ -6,5 +6,21 @@
 </head>
 <body>
     <h1>Style Guide</h1>
-    <p></p>
+    <p>
+		Lextra follows the code style demonstrated in the official Lua book, plus
+		some additional items. In short:
+	</p>
+	<ul>
+		<li>Double quotes for strings, single quotes for characters (1-length strings)</li>
+		<li>Avoid terminating clauses with a semicolon</li>
+		<li>Try to write code that reads as English</li>
+		<li>Use camelCase for variables and functions</li>
+		<li>Data which is intended to remain constant sould use CAPS_CASE</li>
+		<li>Use <span class="code">local</span> wherever possible to minimize global footprint</li>
+		<li>Reserve _ and __ for temporary variables</li>
+		<li>Any integer-indexed data structure should start at 1 when possible</li>
+		<li>Modify metatables with common sense</li>
+		<li>c libraries should not allow segfaults, no matter how the Lua is uesd</li>
+		<li>Pointers should be stored in userdata metatables, not exposed to Lua code</li>
+	</ul>
 </body>
