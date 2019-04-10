@@ -4,7 +4,7 @@
 
 --]]
 
-local JSON = {};
+local JSON = {}
 
 function JSON.parse(str)
     -- TODO
@@ -22,4 +22,4 @@ function JSON.stringify(t)
     -- TODO
 end
 
-return JSON;
+return JSON

@@ -16,6 +16,11 @@ p{
 	text-align: center;
 	margin: 20px auto;
 }
+p.note{
+	font-style: italic;
+	line-height: 1;
+	color: rgb(80, 80, 80);
+}
 a, a:visited{
 	text-decoration: none;
 	color: rgb(0, 150, 250);
