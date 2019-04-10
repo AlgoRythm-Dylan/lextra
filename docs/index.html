@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+	<title>lextra docs</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,400|Ubuntu+Mono" rel="stylesheet">
+	<link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<h1>Lextra</h1>
+	<p>
+		Lextra (roughly meaning Lua extra libraries, Lua extra functionality, or even "a lil' extra")
+		is a general-purpose Lua library with the main goal of making Lua a viable stand-alone
+		programming language and adding to the Lua standard library to make programming in Lua
+		just a bit quicker and easier.
+	</p>
+	<p>
+		While there are big plans for this library, nothing's going to be implemented for sure except
+		the things which have already been implemented. In other words, no promises.
+	</p>
+	<p>
+		Lextra does not require you run a special version of Lua. Lextra is designed to be dynamically
+		linked with the default Lua interpreter. However, lextra may offer precompiled binaries for
+		convenience (Compiling Lua on Windows can be tricky). Lextra is either written in Lua directly
+		or compiled to a dynamic library (.dll for windows and .so for linux) so that you can simply
+		<span class="code">require</span> whatever library you desire. No installation, no hassle.
+	</p>
+	<p>
+		Lextra has started on Lua 5.3 and does not have plans to be compatible with previous versions.
+		Lextra may be compatible with them by accident, however. In addition, Lextra plans to keep up
+		with the official releases of Lua the best it can, and will probably drop support for older
+		versions of Lua the minute lextra is adapted to a newer version.
+	</p>
+
+	<p>
+		Configuration is a minor, but interesting element to lextra. You will find some settings in
+		<span class="code">lextra_config.lua</span>, and you can check configuration programmatically
+		by requiring that module. You cannot change it programmatically, however, because modules
+		each import the config at the time they are imported. A good exmaple for the use case of this
+		is the config item <span class="code">PROTECT_BUILTIN_LIBS</span> which, if allowed,
+		will disallow the adddition of functionality to the built-in Lua libraries.
+		The <span class="code">table</span> library, for example, NOT will recieve new functions such as
+		<span class="code">table.prettyprint()</span> and <span class="code">table.serialize()</span>.
+		If you have already implemented these functions yourself, importing lextra will overwrite
+		these functions. Setting the above flag to true will prevent this, and instead place them in
+		a different table called <span class="code">lextra.table</span>
+	</p>
+
+	<p>
+		While Lua's minimalist style is lost here, lextra still aims to be simple. Code is sectioned
+		off into manageable modules, which almost always clearly define what they do in their name.
+		If you don't want to use a module, you don't need to (Although some libraries depend on each
+		other, and will be imported whether you like it or not).
+	</p>
+
+	<h1>Modules (alphabetical)</h1>
+
+	<table class="contents">
+		<tr>
+			<th>Module</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><a href="modules/json.html">JSON</a></td>
+			<td>JSON parsing and dumping</td>
+		</tr>
+		<tr>
+			<td><a href="modules/lextra.html">lextra</a></td>
+			<td>Main extention module; general extentions</td>
+		</tr>
+	</table>
+</body>

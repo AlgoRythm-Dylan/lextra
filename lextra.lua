@@ -1,6 +1,16 @@
 -- Get the global config
 local config = require("lextra_config");
 
+-- Set the global lextra version
+_LEXTRA_VERSION = "0.0.1"; -- major.minor.patch
+
+-- Put the table functions in the lextra library if we aren't allowed to modify table
+local tableLib = table;
+if config.PROTECT_BUILTIN_LIBS then
+	lextra = lextra or {table = {}};
+	tableLib = lextra.table;
+end
+
 --[[
 
     Serialize a table, which is similar to converting it
@@ -8,8 +18,7 @@ local config = require("lextra_config");
     (Such as functions and userdata)
 
 --]]
-if config.MODIFY_BUILTIN_LIBS then
-function table.serialize(t)
+function tableLib.serialize(t)
     local serializedTable = "{";
     local firstElement = true;
     for _,__ in pairs(t) do
@@ -32,18 +41,15 @@ function table.serialize(t)
     end
     return serializedTable.."}";
 end
-end
 
 --[[
 
     De-serialize tables using the interpreter for performance
 
 --]]
-if config.MODIFY_BUILTIN_LIBS then
-function table.deserialize(str)
+function tableLib.deserialize(str)
     local f = load("return "..str);
     if f and type(f) == "function" then return f() else return nil end
-end
 end
 
 --[[
@@ -51,8 +57,7 @@ end
     Pretty print tables, for debugging
 
 --]]
-if config.MODIFY_BUILTIN_LIBS then
-function table.prettyprint(t, indentLevel)
+function tableLib.prettyprint(t, indentLevel)
     indentLevel = indentLevel or 0;
     local prettyTable = "";
     local indentation = string.rep("\t", indentLevel);
@@ -76,15 +81,13 @@ function table.prettyprint(t, indentLevel)
     end
     return prettyTable;
 end
-end
 
 --[[
 
     Get the keys of a table
 
 --]]
-if config.MODIFY_BUILTIN_LIBS then
-function table.keys(t)
+function tableLib.keys(t)
     local i = 0;
     local keys = {};
     for _,__ in pairs(t) do
@@ -92,5 +95,4 @@ function table.keys(t)
         keys[i] = _;
     end
     return keys;
-end
 end

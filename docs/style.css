@@ -1,0 +1,54 @@
+*{
+	font-family: roboto;
+	font-size: 18px;
+	line-height: 2;
+}
+h1{
+	text-align: center;
+	font-size: 60px;
+	font-weight: 100;
+	line-height: 1;
+	padding: 30px;
+	margin: 0;
+}
+p{
+	max-width: 600px;
+	text-align: center;
+	margin: 20px auto;
+}
+a, a:visited{
+	text-decoration: none;
+	color: rgb(0, 150, 250);
+}
+a:hover{
+	color: rgb(0, 180, 255);
+}
+/* Short inline code blocks, just to highlight that this text is code */
+span.code{
+	background: rgb(230, 230, 230);
+	color: rgb(80, 80, 80);
+	font-family: 'Ubuntu Mono';
+}
+/* Not the contents OF a table, but the style for the table of contents */
+table.contents{
+	width: 600px;
+	border: solid black 2px;
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+table.contents th, table.contents td{
+	padding: 10px;
+}
+table.contents th {
+	background: rgb(20, 100, 140);
+	color: white;
+}
+table.contents tr th:nth-child(1), table.contents tr td:nth-child(1){
+	text-align: left;
+}
+table.contents tr th:nth-child(2), table.contents tr td:nth-child(2){
+	text-align: right;
+}
+table.contents tr:nth-child(odd){
+	background: rgb(230, 230, 230);
+}
