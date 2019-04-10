@@ -23,3 +23,10 @@ This library should help with the first use case, but is really
 targeted at the second. lextra hopes to create a "standard",
 general-purpose library which makes Lua a viable language
 for application development on it's own.
+
+
+# Why lextra?
+
+Current bonuses include:
+
+- Configurable design (lextra_config.lua)
