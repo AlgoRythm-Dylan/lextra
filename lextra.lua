@@ -1,8 +1,11 @@
 -- Get the global config
-local config = require("lextra_config")
+local config = require("config")
 
 -- Set the global lextra version
 _LEXTRA_VERSION = "0.0.1" -- major.minor.patch
+
+-- Seed random
+if config.AUTO_SEED_RANDOM then math.randomseed(os.time()) end
 
 -- Put the table functions in the lextra library if we aren't allowed to modify table
 local tableLib = table
