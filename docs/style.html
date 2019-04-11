@@ -22,5 +22,15 @@
 		<li>Modify metatables with common sense</li>
 		<li>c libraries should not allow segfaults, no matter how the Lua is uesd</li>
 		<li>Pointers should be stored in userdata metatables, not exposed to Lua code</li>
+		<li>
+				C libraries should be named lib[name], so that intermediary Lua files
+				can take the library name. Example: libsocket.dll and socket.lua. This
+				way, you can <span class="code">require</span> either libsocket for
+				the raw library or socket for the Lua version (which should be easier
+				to use)
+		</li>
+		<li>If it makes sense to implement it in Lua, implement it in Lua.</li>
+		<li>Lua is a proper noun, and is not an acronym. L-u-a.</li>
 	</ul>
 </body>
+<p><a href="index.html">Home</a></p>

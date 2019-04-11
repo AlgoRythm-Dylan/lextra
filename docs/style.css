@@ -57,3 +57,7 @@ table.contents tr th:nth-child(2), table.contents tr td:nth-child(2){
 table.contents tr:nth-child(odd){
 	background: rgb(230, 230, 230);
 }
+ul{
+	max-width: 600px;
+	margin: auto;
+}
