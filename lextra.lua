@@ -106,7 +106,7 @@ end
 
 --]]
 function string.at(str, index)
-    return string.sub(str, index, index)
+    return string.char(string.byte(str, index))
 end
 
 --[[

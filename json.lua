@@ -19,9 +19,26 @@
 
 --]]
 require("lextra")
-local DEBUG = false
+local DEBUG = true
 local JSON = {}
 if DEBUG then JSON.debug = {} end
+
+-- use string.byte instead of 1-string substrings, as to not need to allocate another string
+-- each time we want to look at a character
+
+local CHAR = {
+    OPEN_C_BRACKET = string.byte('{'),
+    CLOSE_C_BRACKET = string.byte('}'),
+    OPEN_SQ_BRACKET = string.byte('['),
+    CLOSE_SQ_BRACKET = string.byte(']'),
+    DOUBLE_QUOTE = string.byte('\"'),
+    SINGLE_QUOTE = string.byte('\''),
+    COLON = string.byte(':'),
+    COMMA = string.byte(','),
+    ESCAPE = string.byte('\\'),
+    FSLASH = string.byte('/'),
+    STAR = string.byte('*')
+}
 
 function JSON.parse(str, start)
     position = start or 1
@@ -34,9 +51,9 @@ function JSON.parse(str, start)
     local lastDataAlreadyAdded = false
     while position <= #str and not finished do
         local nextPos = nextInterestingChar(str, position)
-        local interestingChar = string.at(str, nextPos)
+        local interestingChar = string.byte(str, nextPos)
         if(interestingChar == -1) then error("Malformed JSON: ended improperly") end
-        if interestingChar == '{' then
+        if interestingChar == CHAR.OPEN_C_BRACKET then
             if not started then
                 started = true
                 position = nextPos + 1
@@ -57,7 +74,7 @@ function JSON.parse(str, start)
                     currentLabel = nil
                 end
             end
-        elseif interestingChar == '}' then
+        elseif interestingChar == CHAR.CLOSE_C_BRACKET then
             if not started then
                 error("Malformed JSON at index "..position..": unexpected token '}'")
             end
@@ -78,7 +95,7 @@ function JSON.parse(str, start)
             -- We're done here!
             position = nextPos
             finished = true
-        elseif interestingChar == '[' then
+        elseif interestingChar == CHAR.OPEN_SQ_BRACKET then
             if not started then
                 isArray = true
                 started = true
@@ -104,7 +121,7 @@ function JSON.parse(str, start)
                     lastDataAlreadyAdded = true
                 end
             end
-        elseif interestingChar == ']' then
+        elseif interestingChar == CHAR.CLOSE_SQ_BRACKET then
             if not started then
                 error("Malformed JSON at index "..position..": unexpected token ']'")
             else
@@ -121,7 +138,7 @@ function JSON.parse(str, start)
                     error("Malformed JSON at index "..position..": unexpected token ']'")
                 end
             end
-        elseif interestingChar == '\"' then
+        elseif interestingChar == CHAR.DOUBLE_QUOTE or interestingChar == CHAR.SINGLE_QUOTE then
             if isArray then
                 -- This is the start of a string inside an array
                 local stringEnd = findEndOfString(str, nextPos)
@@ -144,37 +161,14 @@ function JSON.parse(str, start)
                     lastDataAlreadyAdded = true
                 end
             end
-        elseif interestingChar == '\'' then
-            if isArray then
-                -- This is the start of a string inside an array
-                local stringEnd = findEndOfString(str, nextPos)
-                data[currentIndex] = string.sub(str, nextPos + 1, stringEnd - 1)
-                currentIndex = currentIndex + 1
-                position = stringEnd + 1
-                lastDataAlreadyAdded = true
-            else
-                if currentLabel == nil then
-                    -- This is the new current label!
-                    local stringEnd = findEndOfString(str, nextPos)
-                    currentLabel = string.sub(str, nextPos + 1, stringEnd - 1)
-                    position = stringEnd + 1
-                else
-                    -- This isn't the key, it's the value!
-                    local stringEnd = findEndOfString(str, nextPos)
-                    data[currentLabel] = string.sub(str, nextPos + 1, stringEnd - 1)
-                    currentLabel = nil
-                    position = stringEnd + 1
-                    lastDataAlreadyAdded = true
-                end
-            end
-        elseif interestingChar == ':' then
+        elseif interestingChar == CHAR.COLON then
             if isArray or currentLabel == nil then
                 error("Malformed JSON at index "..position..": unexpected token ':'")
             else
                 -- This is valid. Progress the reader
                 position = nextPos + 1
             end
-        elseif interestingChar == ',' then
+        elseif interestingChar == CHAR.COMMA then
             if isArray then -- [javascript arrays]
                 if not lastDataAlreadyAdded then
                     -- Text UP TO the current comma from last interesting character
@@ -200,12 +194,33 @@ function JSON.parse(str, start)
                     position = nextPos + 1
                 end
             end
+        elseif interestingChar == CHAR.FSLASH then
+            if position + 1 <= #str then
+                if string.byte(str, nextPos + 1) == CHAR.STAR then
+                    local endOfComment = findEndOfComment(str, position)
+                    position = endOfComment + 1
+                else
+                    error("Malformed JSON at index "..position..": unexpected token '/'")
+                end
+            else
+                error("Malformed JSON at index "..position..": unexpected token '/'")
+            end
         end
     end
     return data, position -- Return the data and the place where parsing stopped. Helpful for recursion
 end
 
-local interesting = {'{', '}', '[', ']', '\"', '\'', ':', ','}
+local interesting = {
+    CHAR.OPEN_C_BRACKET,
+    CHAR.CLOSE_C_BRACKET,
+    CHAR.OPEN_SQ_BRACKET,
+    CHAR.CLOSE_SQ_BRACKET,
+    CHAR.DOUBLE_QUOTE,
+    CHAR.SINGLE_QUOTE,
+    CHAR.COLON,
+    CHAR.COMMA,
+    CHAR.FSLASH
+}
 --[[
 
     Return the next "interesting" character in terms of syntax.
@@ -225,7 +240,8 @@ local interesting = {'{', '}', '[', ']', '\"', '\'', ':', ','}
 function nextInterestingChar(str, start)
     local position = start or 0
     while position <= #str do
-        if table.contains(interesting, string.at(str, position)) then return position end
+        --print(position)
+        if table.contains(interesting, string.byte(str, position)) then return position end
         position = position + 1 -- That character wasn't interesting, continue
     end
     return -1 -- Every character was boring
@@ -240,13 +256,35 @@ end
 function findEndOfString(str, start)
     start = start or 0
     local escaped = false -- Is the next character escaped (like \t)? If so, ignore it
-    local strChar = string.at(str, start) -- Single or double quote string?
+    local strChar = string.byte(str, start) -- Single or double quote string?
     local position = start + 1
     while position <= #str do
         if escaped then escaped = false else
-            local charHere = string.at(str, position)
+            local charHere = string.byte(str, position)
             if charHere == strChar then return position end
-            if charHere == '\\' then escaped = true end
+            if charHere == CHAR.ESCAPE then escaped = true end
+        end
+        position = position + 1
+    end
+    return position
+end
+
+--[[
+
+    /*    comment             */
+    ^                          ^
+    start                 return
+
+--]]
+function findEndOfComment(str, start)
+    start = start or 0
+    local position = start + 1
+    while position <= #str do
+        local charHere = string.byte(str, position)
+        if charHere == CHAR.STAR then
+            if position + 1 <= #str then
+                if string.byte(str, position + 1) == CHAR.FSLASH then return position + 1 end
+            end
         end
         position = position + 1
     end
@@ -286,6 +324,7 @@ if DEBUG then
     JSON.debug.findEndOfString = findEndOfString
     JSON.debug.stringToType = stringToType
     JSON.debug.isArrayTable = isArrayTable
+    JSON.debug.findEndOfComment = findEndOfComment
 end
 
 --[[
