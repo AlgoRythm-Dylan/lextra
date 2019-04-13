@@ -1,2 +1,2 @@
 Simplify table.serialize with string.format("%q")
-Write JSON docs
+Update module docs to not look awful

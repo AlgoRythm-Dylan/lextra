@@ -35,26 +35,29 @@ span.code{
 	font-family: 'Ubuntu Mono';
 }
 /* Not the contents OF a table, but the style for the table of contents */
-table.contents{
+table.contents, table.memberdata{
 	width: 600px;
 	border: solid black 2px;
 	margin: 20px auto;
 	border-collapse: collapse;
 }
-table.contents th, table.contents td{
+table.contents th, table.contents td, table.memberdata th, table.memberdata td{
 	padding: 10px;
 }
-table.contents th {
+table.contents th, table.memberdata th{
 	background: rgb(20, 100, 140);
 	color: white;
 }
-table.contents tr th:nth-child(1), table.contents tr td:nth-child(1){
+table.contents tr th:nth-child(1), table.contents tr td:nth-child(1),
+table.memberdata tr th:nth-child(1), table.memberdata tr td:nth-child(1){
 	text-align: left;
 }
-table.contents tr th:nth-child(2), table.contents tr td:nth-child(2){
+table.contents tr th:nth-child(2), table.contents tr td:nth-child(2),
+table.memberdata tr th:nth-child(2), table.memberdata tr td:nth-child(2){
 	text-align: right;
+	line-height: 1.2;
 }
-table.contents tr:nth-child(odd){
+table.contents tr:nth-child(odd), table.memberdata tr:nth-child(odd){
 	background: rgb(230, 230, 230);
 }
 ul{

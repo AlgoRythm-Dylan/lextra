@@ -244,7 +244,7 @@ function findEndOfString(str, start)
     local position = start + 1
     while position <= #str do
         if escaped then escaped = false else
-        local charHere = string.at(str, position)
+            local charHere = string.at(str, position)
             if charHere == strChar then return position end
             if charHere == '\\' then escaped = true end
         end

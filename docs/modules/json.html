@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+	<title>lextra docs</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,400|Ubuntu+Mono" rel="stylesheet">
+	<link href="../style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <h1>JSON</h1>
+    <p class="note">The module used for parsing and serializing data in JSON format</p>
+
+    <table class="memberdata">
+        <tr>
+            <th style="width:100px">Item name</th>
+            <th>Item description</th>
+        </tr>
+        <tr>
+            <td>parse<br/>(string, number)</td>
+            <td>
+                Given any string, either parse the valid JSON data into a Lua table, or fail
+                and raise an error. Returns two items: [1] the Lua table, [2] the index of the
+                last character of the JSON string where the parser stopped. It returns the
+                second item mainly for parsing purposes (JSON.parse is recursive). Second (optional)
+                parameter is where in the string to start parsing from.
+            </td>
+        </tr>
+        <tr>
+            <td>stringify<br/>(table, boolean)</td>
+            <td>
+                Given any Lua table, returns a valid JSON string. Second (optional) parameter
+                expects a boolean and if true, enables an array check. Any table that CAN
+                be represented as a JSON array WILL be. This is false by default
+            </td>
+        </tr>
+    </table>
+</body>
