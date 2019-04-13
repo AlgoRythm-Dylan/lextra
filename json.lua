@@ -267,6 +267,11 @@ function stringToType(str)
     else error("Could not parse data; expected a type (got \""..data.."\")") end
 end
 
+--[[
+
+    Checks to see if a table can be represented as a JSON array
+
+--]]
 function isArrayTable(t)
     local currentIndex = 1
     for _, __ in pairs(t) do
