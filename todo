@@ -1,1 +1,2 @@
-See if JSON.parse can be done with pattern matching rather than string iteration
+Simplify table.serialize with string.format("%q")
+Write JSON docs

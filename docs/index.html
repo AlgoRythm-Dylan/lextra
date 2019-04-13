@@ -31,20 +31,6 @@
 	</p>
 
 	<p>
-		Configuration is a minor, but interesting element to lextra. You will find some settings in
-		<span class="code">config.lua</span>, and you can check configuration programmatically
-		by requiring that module. You cannot change it programmatically, however, because modules
-		each import the config at the time they are imported. A good exmaple for the use case of this
-		is the config item <span class="code">PROTECT_BUILTIN_LIBS</span> which, if allowed,
-		will disallow the adddition of functionality to the built-in Lua libraries.
-		The <span class="code">table</span> library, for example, NOT will recieve new functions such as
-		<span class="code">table.prettyprint()</span> and <span class="code">table.serialize()</span>.
-		If you have already implemented these functions yourself, importing lextra will overwrite
-		these functions. Setting the above flag to true will prevent this, and instead place them in
-		a different table called <span class="code">lextra.table</span>
-	</p>
-
-	<p>
 		While Lua's minimalist style is lost here, lextra still aims to be simple. Code is sectioned
 		off into manageable modules, which almost always clearly define what they do in their name.
 		If you don't want to use a module, you don't need to (Although some libraries depend on each
