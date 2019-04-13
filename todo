@@ -1,2 +1,2 @@
-Simplify table.serialize with string.format("%q")
+Make table.prettyprint report empty tables
 Update module docs to not look awful

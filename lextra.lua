@@ -16,13 +16,8 @@ function table.serialize(t)
     local firstElement = true
     for _,__ in pairs(t) do
         local dataType = type(__)
-        if datatype == "number" or dataType == "boolean" then
+        if dataType == "number" or dataType == "boolean" or dataType == "string" then
             -- This can just be serialized, no problem
-            if not firstElement then serializedTable = serializedTable.."," end
-            serializedTable = serializedTable..tostring(_).."="..tostring(__)
-            firstElement = false
-        elseif dataType == "string" then
-            -- Remember to escape any quotation marks
             if not firstElement then serializedTable = serializedTable.."," end
             serializedTable = serializedTable..tostring(_).."="..string.format("%q", __)
             firstElement = false
