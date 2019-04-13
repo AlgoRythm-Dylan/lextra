@@ -195,7 +195,7 @@ function JSON.parse(str, start)
                 end
             end
         elseif interestingChar == CHAR.FSLASH then
-            if position + 1 <= #str then
+            if nextPos + 1 <= #str then
                 if string.byte(str, nextPos + 1) == CHAR.STAR then
                     local endOfComment = findEndOfComment(str, position)
                     position = endOfComment + 1
