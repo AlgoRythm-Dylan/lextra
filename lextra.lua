@@ -52,7 +52,9 @@ function table.prettyprint(t, indentLevel)
     local prettyTable = ""
     local indentation = string.rep("\t", indentLevel)
     local first = true
+    local itemCount = 0
     for _,__ in pairs(t) do
+        itemCount = itemCount + 1
         if not first then prettyTable = prettyTable.."\n" end
         first = false
         prettyTable = prettyTable..indentation.."["..type(__).."] "..tostring(_)
@@ -68,6 +70,9 @@ function table.prettyprint(t, indentLevel)
                 prettyTable = prettyTable.."\n"..table.prettyprint(__, indentLevel + 1)
             end
         end
+    end
+    if itemCount == 0 then
+        prettyTable = prettyTable..indentation.."[EMPTY TABLE]"
     end
     return prettyTable;
 end
@@ -119,9 +124,33 @@ function string.trim(str)
     local endPos = #str
     if endPos == 0 then return str end -- Check for empty strings
     while string.byte(str, startPos) == 32 do startPos = startPos + 1 end
-    if startPos == (endPos + 1) then return '' end
     while string.byte(str, endPos) == 32 do endPos = endPos - 1 end
     return string.sub(str, startPos, endPos)
 end
+
+--[[
+
+    Trim all leading whitespaces ONLY
+
+]]--
+function string.trimRight(str)
+    local pos = 1
+    if #str == 0 then return str end
+    while string.byte(str, pos) == 32 do pos = pos + 1 end
+    return string.sub(str, pos, #str)
+end
+
+--[[
+
+    Trim all trailing whitespaces ONLY
+
+]]--
+function string.trimLeft(str)
+    local pos = #str
+    if #str == 0 then return str end
+    while string.byte(str, pos) == 32 do pos = pos - 1 end
+    return string.sub(str, 1, pos)
+end
+
 
 -- TODO: string.trimRight, string.trimLeft

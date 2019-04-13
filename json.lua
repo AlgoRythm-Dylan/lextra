@@ -19,7 +19,7 @@
 
 --]]
 require("lextra")
-local DEBUG = true
+local DEBUG = false
 local JSON = {}
 if DEBUG then JSON.debug = {} end
 
@@ -340,6 +340,7 @@ function JSON.stringify(t, arrayCheck)
     local JSONString = nil
     if isArray then JSONString = "["
     else JSONString = "{" end
+    local currentIndex = 1
     for _,__ in pairs(t) do
         local itemType = type(__)
         if not isArray then -- Add the key and the value
@@ -347,10 +348,16 @@ function JSON.stringify(t, arrayCheck)
                 if not isFirstItem then JSONString = JSONString.."," end
                 JSONString = JSONString..string.format("%q",_)..":"..string.format("%q",__)
                 isFirstItem = false
+                currentIndex = currentIndex + 1
             elseif itemType == "table" then
                 if not isFirstItem then JSONString = JSONString.."," end
-                JSONString = JSONString..string.format("%q",_)..":"..JSON.stringify(__,arrayCheck)
+                if arrayCheck and _ == currentIndex then
+                    JSONString = JSONString..JSON.stringify(__,arrayCheck) -- Anonymous object
+                else
+                    JSONString = JSONString..string.format("%q",_)..":"..JSON.stringify(__,arrayCheck)
+                end
                 isFirstItem = false
+                currentIndex = currentIndex + 1
             end
         else --isArray
             if itemType == "number" or itemType == "string" or itemType == "boolean" then

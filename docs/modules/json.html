@@ -2,34 +2,103 @@
 <head>
 	<title>lextra docs</title>
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,400|Ubuntu+Mono" rel="stylesheet">
-	<link href="../style.css" type="text/css" rel="stylesheet">
+    <link href="../style.css" type="text/css" rel="stylesheet">
+    <link href="../desert.css" type="text/css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 </head>
 <body>
     <h1>JSON</h1>
     <p class="note">The module used for parsing and serializing data in JSON format</p>
 
-    <table class="memberdata">
+    <pre class="prettyprint lang-lua material">
+local JSON = require("json")
+
+local JSONString = "{'json_parser': true}"
+local data = JSON.parse(JSONString)
+
+print(table.prettyprint(data))
+
+local testTable = {this_is_a_boolean = true, {1, 3, 4, 5, 6}};
+
+print(JSON.stringify(testTable, true))</pre>
+        <div class="spacer"></div>
+    <pre class="output material">
+[boolean] json_parser   true
+{[1,3,4,5,6],"this_is_a_boolean":true}</pre>
+    <table class="module">
         <tr>
-            <th style="width:100px">Item name</th>
-            <th>Item description</th>
+            <th colspan="2">JSON</th>
         </tr>
         <tr>
-            <td>parse<br/>(string, number)</td>
+            <td>Dependencies:</td>
+            <td>lextra</td>
+        </tr>
+        <tr>
+            <td>Writen in:</td>
+            <td>lua</td>
+        </tr>
+        <tr>
+            <td>Dependants:</td>
+            <td>[none]</td>
+        </tr>
+    </table>
+    <p>
+        The JSON module has two methods: parse and stringify. They do the opposite thing of
+        each other
+    </p>
+    <table class="function">
+        <tr>
+            <th colspan="3">parse</th>
+        </tr>
+        <tr>
+            <td>Arguments</td>
+            <td>Returns</td>
+            <td>Description</td>
+        </tr>
+        <tr>
             <td>
-                Given any string, either parse the valid JSON data into a Lua table, or fail
-                and raise an error. Returns two items: [1] the Lua table, [2] the index of the
-                last character of the JSON string where the parser stopped. It returns the
-                second item mainly for parsing purposes (JSON.parse is recursive). Second (optional)
-                parameter is where in the string to start parsing from.
+                <span class="code">[string]</span> str<br/>
+                <span class="code">[number]*</span> start
             </td>
-        </tr>
-        <tr>
-            <td>stringify<br/>(table, boolean)</td>
             <td>
-                Given any Lua table, returns a valid JSON string. Second (optional) parameter
-                expects a boolean and if true, enables an array check. Any table that CAN
-                be represented as a JSON array WILL be. This is false by default
+                <span class="code">[table]</span> data<br/>
+                <span class="code">[number]</span> position
+            </td>
+            <td>
+                Converts any valid JSON string into a Lua table. It is important to note that this
+                funciton returns a table AND a number. This number is mostly used for parsing, and
+                represents the last character the parser read.
             </td>
         </tr>
     </table>
+
+    <p class="note">* optional parameter, default = 0</p>
+
+    <table class="function">
+            <tr>
+                <th colspan="3">stringify</th>
+            </tr>
+            <tr>
+                <td>Arguments</td>
+                <td>Returns</td>
+                <td>Description</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="code">[table]</span> t<br/>
+                    <span class="code">[boolean]*</span> arrayCheck
+                </td>
+                <td>
+                    <span class="code">[string]</span> JSONString<br/>
+                </td>
+                <td>
+                    Serializes any Lua table into JSON string. The second parameter (optional)
+                    will check if the Lua table can be represented as a JSON array. This
+                    is false by default, and can impact performance.
+                </td>
+            </tr>
+        </table>
+
+        <p class="note">* optional parameter, default = false</p>
+
 </body>

@@ -16,10 +16,16 @@ p{
 	text-align: center;
 	margin: 20px auto;
 }
+.material {
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
 p.note{
 	font-style: italic;
 	line-height: 1;
 	color: rgb(80, 80, 80);
+}
+div.spacer{
+	height: 30px;
 }
 a, a:visited{
 	text-decoration: none;
@@ -35,32 +41,83 @@ span.code{
 	font-family: 'Ubuntu Mono';
 }
 /* Not the contents OF a table, but the style for the table of contents */
-table.contents, table.memberdata{
+table.contents, table.memberdata, table.module{
 	width: 600px;
 	border: solid black 2px;
 	margin: 20px auto;
 	border-collapse: collapse;
 }
-table.contents th, table.contents td, table.memberdata th, table.memberdata td{
+table.contents th, table.contents td{
 	padding: 10px;
 }
-table.contents th, table.memberdata th{
+table.contents th, table.function th{
 	background: rgb(20, 100, 140);
 	color: white;
 }
-table.contents tr th:nth-child(1), table.contents tr td:nth-child(1),
-table.memberdata tr th:nth-child(1), table.memberdata tr td:nth-child(1){
+table.contents tr th:nth-child(1), table.contents tr td:nth-child(1){
 	text-align: left;
 }
-table.contents tr th:nth-child(2), table.contents tr td:nth-child(2),
-table.memberdata tr th:nth-child(2), table.memberdata tr td:nth-child(2){
+table.contents tr th:nth-child(2), table.contents tr td:nth-child(2){
 	text-align: right;
 	line-height: 1.2;
 }
-table.contents tr:nth-child(odd), table.memberdata tr:nth-child(odd){
+table.contents tr:nth-child(odd){
 	background: rgb(230, 230, 230);
 }
 ul{
 	max-width: 600px;
 	margin: auto;
+}
+pre{
+	max-width: 600px;
+	margin: auto;
+	border-radius: .3pc;
+	font-family: 'Ubuntu Mono';
+	background: #333;
+	padding: 10px;
+	color: white;
+	overflow: auto;
+}
+pre.prettyprint{
+	border: none !important;
+	padding: 10px !important;
+}
+pre.prettyprint * {
+	font-family: 'Ubuntu Mono' !important;
+}
+table.function{
+	border: solid black 2px;
+	margin: 20px auto;
+	border-collapse: collapse;
+	max-width: 800px;
+}
+table.function tr td:nth-child(1), table.function tr td:nth-child(2){
+	white-space: nowrap;
+}
+table.function tr:nth-child(2){
+	background: rgb(200, 200, 200);
+	text-align: center;
+}
+table.function tr td{
+	border: solid rgb(200, 200, 200) 1px;
+	border-top: none;
+	border-bottom: none;
+	padding: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+table.module{
+	width: 300px;
+	border-color: rgb(80, 80, 80)
+}
+table.module th{
+	background: rgb(230, 230, 230);
+}
+table.module td{
+	padding: 10px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+table.module tr td:nth-child(2){
+	text-align: right;
 }
